@@ -17,6 +17,8 @@ int main(int argc, const char **argv)
                              "{help h||Display this message and exit.}"
                              "{@image|<none>|Path to image file.}"
                              "{@cascade|cascades/haarcascade_frontalface_alt.xml|Path to face cascade. Defaults to frontalface_alt.xml}"
+                             "{scale s|1.1|Scale factor specifies how much the image size is reduced at each image scale during detection.}"
+                             "{neighbors n|3|Min. neighbors specifies how many neighbors each candidate rectangle should have to retain itself for the next stage.}"
                              "{display d||Display detections.}");
     parser.about("\nThis program detects faces on the provided image and outputs the results to standard output.");
 
@@ -31,6 +33,8 @@ int main(int argc, const char **argv)
     String image_path = samples::findFile(parser.get<String>("@image"));
     String cascade_path = samples::findFile(parser.get<String>("@cascade"));
     bool display_flag = parser.has("display");
+    double scaleFactor = parser.get<double>("scale");
+    int minNeighbors = parser.get<uint>("neighbors");
 
     // Check for parsing errors
     if (!parser.check())
@@ -56,16 +60,19 @@ int main(int argc, const char **argv)
     // Perform face detection
     Mat image_gray;
     std::vector<Rect> faces;
+    std::vector<int> rejectLevels;
+    std::vector<double> weights;
     cvtColor(image, image_gray, COLOR_BGR2GRAY);
     equalizeHist(image_gray, image_gray);
-    cascade.detectMultiScale(image_gray, faces);
+    // image, objects, rejectLevels, levelWeights, scaleFactor, minNeighbors, flags, minSize, maxSize, outputRejectLevels
+    cascade.detectMultiScale(image_gray, faces, rejectLevels, weights, scaleFactor, minNeighbors, 0, Size(), Size(), true);
  
     // Generate output
     cout << image_path << "\n";
     cout << faces.size() << "\n";
     for (size_t i = 0; i < faces.size(); i++)
     {
-        cout << faces[i].x << " " << faces[i].y << " " << faces[i].width << " " << faces[i].height << "\n";
+        cout << faces[i].x << " " << faces[i].y << " " << faces[i].width << " " << faces[i].height << " " <<  weights[i] << "\n";
     }
 
     // If requested, display image with detections
