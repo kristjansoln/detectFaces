@@ -8,8 +8,7 @@ using namespace std;
 using namespace cv;
 
 void detectAndDisplay(Mat frame);
-CascadeClassifier face_cascade;
-CascadeClassifier eyes_cascade;
+CascadeClassifier cascade;
 
 int main(int argc, const char **argv)
 {
@@ -29,8 +28,8 @@ int main(int argc, const char **argv)
     }
 
     // Find specified parameters
-    String image_name = samples::findFile(parser.get<String>("@image"));
-    String cascade_name = samples::findFile(parser.get<String>("@cascade"));
+    String image_path = samples::findFile(parser.get<String>("@image"));
+    String cascade_path = samples::findFile(parser.get<String>("@cascade"));
     bool display_flag = parser.has("display");
 
     // Check for parsing errors
@@ -40,10 +39,48 @@ int main(int argc, const char **argv)
         return 1;
     }
 
-    // Print parameter values and exit
-    cout << "image name: " << image_name << "\n";
-    cout << "cascade name: " << cascade_name << "\n";
-    if(display_flag)
-        cout << "Display flag ON" << "\n";
-    
+    // Load specified cascade and image
+    if (!cascade.load(cascade_path))
+    {
+        cerr << "Error loading face cascade:" << cascade_path << "\n";
+        return -1;
+    }
+
+    Mat image = imread(image_path, IMREAD_COLOR);
+    if (image.empty())
+    {
+        std::cerr << "Error reading the image: " << image_path << "\n";
+        return 1;
+    }
+
+    // Perform face detection
+    Mat image_gray;
+    std::vector<Rect> faces;
+    cvtColor(image, image_gray, COLOR_BGR2GRAY);
+    equalizeHist(image_gray, image_gray);
+    cascade.detectMultiScale(image_gray, faces);
+ 
+    // TODO: Generate output for each face
+    for (size_t i = 0; i < faces.size(); i++)
+    {
+        Point p1(faces[i].x, faces[i].y);
+        Point p2(faces[i].x + faces[i].width, faces[i].y + faces[i].height);
+    }
+
+    // TODO: Generate output
+
+    // If requested, display image with detections
+    if (display_flag)
+    {
+        for (size_t i = 0; i < faces.size(); i++)
+        {
+            Point p1(faces[i].x, faces[i].y);
+            Point p2(faces[i].x + faces[i].width, faces[i].y + faces[i].height);
+            rectangle(image, p1, p2, Scalar(0, 255, 255), 1, LINE_4);
+        }
+        imshow("Face detection", image);
+        waitKey();
+    }
+
     return 0;
+}
