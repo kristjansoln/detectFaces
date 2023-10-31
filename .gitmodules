@@ -1,0 +1,3 @@
+[submodule "fddb_evaluation_docker"]
+	path = fddb_evaluation_docker
+	url = git@github.com:jan3zk/fddb_evaluation_docker.git
