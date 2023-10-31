@@ -60,14 +60,13 @@ int main(int argc, const char **argv)
     equalizeHist(image_gray, image_gray);
     cascade.detectMultiScale(image_gray, faces);
  
-    // TODO: Generate output for each face
+    // Generate output
+    cout << image_path << "\n";
+    cout << faces.size() << "\n";
     for (size_t i = 0; i < faces.size(); i++)
     {
-        Point p1(faces[i].x, faces[i].y);
-        Point p2(faces[i].x + faces[i].width, faces[i].y + faces[i].height);
+        cout << faces[i].x << " " << faces[i].y << " " << faces[i].width << " " << faces[i].height << "\n";
     }
-
-    // TODO: Generate output
 
     // If requested, display image with detections
     if (display_flag)
