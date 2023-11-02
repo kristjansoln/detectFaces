@@ -1,6 +1,6 @@
-#include "opencv2/objdetect.hpp"
-#include "opencv2/highgui.hpp"
-#include "opencv2/imgproc.hpp"
+#include <opencv2/objdetect.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 #include <iostream>
 #include <fstream>
 
@@ -124,6 +124,8 @@ int main(int argc, const char **argv)
                 Point p1(faces[i].x, faces[i].y);
                 Point p2(faces[i].x + faces[i].width, faces[i].y + faces[i].height);
                 rectangle(image, p1, p2, Scalar(0, 255, 255), 1, LINE_4);
+                Point p3(faces[i].x - 10, faces[i].y - 10);
+                putText(image, to_string(weights[i]), p3, FONT_HERSHEY_SIMPLEX, 0.8, Scalar(0, 127, 255));
             }
             imshow("Face detection", image);
             waitKey();
