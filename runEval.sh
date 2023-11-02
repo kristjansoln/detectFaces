@@ -6,7 +6,7 @@
 # Note: Don't add trailing "/
 list_directory="fddb_evaluation_docker/FDDB-folds"
 image_directory="fddb_evaluation_docker/originalPics"
-results_directory="fddb_evaluation_docker/detectionsTemp"
+results_directory="fddb_evaluation_docker/detections"
 # Detector parameters
 cascade="cascades/haarcascade_frontalface_default.xml"
 nNeighbors="3"
@@ -36,5 +36,19 @@ for list_file in $list_directory/FDDB-fold-??.txt; do
     fi
 
 done
+
+# Run the container for performance evaluation
+
+cd fddb_evaluation_docker
+
+export FDDB_HOME=`pwd`
+docker run --rm -it -v ${FDDB_HOME}:/FDDB housebw/fddb-evaluator
+
+if [ $? -ne 0 ]; then
+    echo "Error: failed to run the container"
+    exit 1
+fi
+
+cd ..
 
 exit 0
