@@ -26,6 +26,6 @@ make
 
 4. Configure the `fddb_evaluation_docker` submodule, as described in its documentation. Make sure to download the originalPics and FDDB-folds.
 
-5. Run the script by running `./runEval.sh`. The script processes configured image lists and replaces the contents of the `fddb_evaluation_docker/detections` directory with new results. Then
+5. Run the script with `./runEval.sh`. The script processes configured image lists and replaces the contents of the `fddb_evaluation_docker/detections` directory with new results.
 
 
