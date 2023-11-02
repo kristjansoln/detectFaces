@@ -3,7 +3,7 @@
 # Run FDDB evaluation of the cascade face detector.
 
 # Directories
-# Note: Don't add trailing "/
+# Note: Don't add trailing '/'
 list_directory="fddb_evaluation_docker/FDDB-folds"
 image_directory="fddb_evaluation_docker/originalPics"
 results_directory="fddb_evaluation_docker/detections"
