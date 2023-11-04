@@ -56,3 +56,6 @@ test/test_runner
 
 .vscode
 detectFaces
+detections-sweep/
+mydataset/
+paramSweep.sh

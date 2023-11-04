@@ -20,7 +20,8 @@ int main(int argc, const char **argv)
                              "{imageTopDir i|.|Top image directory, will be prepended to the provided image path. Do not add a trailing forward slash.}"
                              "{scale s|1.1|Scale factor specifies how much the image size is reduced at each image scale during detection.}"
                              "{neighbors n|3|Min. neighbors specifies how many neighbors each candidate rectangle should have to retain itself for the next stage.}"
-                             "{display d||Display detections.}");
+                             "{display d||Display detections.}"
+                             "{verbose v||Verbose output.}");
     parser.about("\nThis program detects faces on the provided image or list of images and outputs the results to standard output.\n");
 
     // If help argument is passed, print help and exit
@@ -77,6 +78,17 @@ int main(int argc, const char **argv)
         String fwdslash("/");
         imagePathList.push_back(imageTopDir + fwdslash + inputFilePath);
         imageList.push_back(inputFilePath);
+    }
+
+    if(parser.has("verbose"))
+    {
+        cout << "Using detector parameters:\n";
+        cout << "inputFilePath: " << inputFilePath << "\n";
+        cout << "cascadePath: " << cascadePath << "\n";
+        cout << "imageTopDir: " << imageTopDir << "\n";
+        cout << "displayFlag: " << displayFlag << "\n";
+        cout << "scaleFactor: " << scaleFactor << "\n";
+        cout << "minNeighbors: " << minNeighbors << "\n";
     }
 
     // Load specified cascade
